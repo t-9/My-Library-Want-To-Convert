@@ -6,19 +6,19 @@ type Text struct {
 	chuni string
 }
 
+func (t *Text) String() string {
+	return t.chuni
+}
+
 // Set take a plain text and return a chuni text struct.
-func (c *Text) Set(s string) *Text {
-	c.plain = s
-	c.convert()
-	return c
+func (t *Text) Set(p string) *Text {
+	t.plain = p
+	t.convert()
+	return t
 }
 
 // TODO
 // To convert a plain text to chuni text.
-func (c *Text) convert() {
-	c.chuni = c.plain
-}
-
-func (c *Text) String() string {
-	return c.chuni
+func (t *Text) convert() {
+	t.chuni = t.plain
 }
