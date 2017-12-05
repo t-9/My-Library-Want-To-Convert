@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	inputText := "我がライブラが変換せしめん"
-	fmt.Println(new(chuni.Text).Set(inputText))
+	plain := "我がライブラが変換せしめん"
+	fmt.Println(new(chuni.Text).Set(plain))
 }
