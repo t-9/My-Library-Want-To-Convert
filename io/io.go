@@ -24,12 +24,8 @@ func (t *Text) Load(name string) (err error) {
 		return
 	}
 	defer func() {
-		if closeErr := f.Close(); closeErr != nil {
-			if err != nil {
-				err = fmt.Errorf("%s\n%s", err.Error(), closeErr.Error())
-			} else {
-				err = closeErr
-			}
+		if closeErr := close(f, err); closeErr != nil {
+			err = closeErr
 		}
 	}()
 
@@ -46,4 +42,40 @@ func (t *Text) Load(name string) (err error) {
 		}
 		t.text = fmt.Sprintf("%s%s\n", t.text, string(rec))
 	}
+}
+
+// Save take a file name and return a error.
+func (t *Text) Save(name string) (err error) {
+	f, err := os.Create(name)
+	if err != nil {
+		return
+	}
+	defer func() {
+		if closeErr := close(f, err); closeErr != nil {
+			err = closeErr
+		}
+	}()
+
+	writer := bufio.NewWriter(f)
+	_, err = writer.WriteString(t.text)
+	if err != nil {
+		return
+	}
+	writer.Flush()
+	return
+}
+
+// Set take a content.
+func (t *Text) Set(content string) {
+	t.text = content
+}
+
+func close(c io.Closer, err error) error {
+	if closeErr := c.Close(); closeErr != nil {
+		if err == nil {
+			return closeErr
+		}
+		return fmt.Errorf("%s\n%s", err.Error(), closeErr.Error())
+	}
+	return nil
 }
