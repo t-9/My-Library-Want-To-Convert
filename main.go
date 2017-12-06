@@ -1,23 +1,36 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/t-9/My-Library-Want-To-Convert/chuni"
-	chuniio "github.com/t-9/My-Library-Want-To-Convert/io"
+	"github.com/t-9/My-Library-Want-To-Convert/io"
 )
 
 const (
 	plainTextFileName = "bin/plain.txt"
+	errorFileName     = "bin/error.txt"
+	resultFileName    = "bin/result.txt"
 )
 
 func main() {
-
-	plain := new(chuniio.Text)
+	plain := new(io.Text)
 	if err := plain.Load(plainTextFileName); err != nil {
-		fmt.Println(err.Error())
+		errorText := new(io.Text)
+		errorText.Set(err.Error())
+		if saveErr := errorText.Save(errorFileName); saveErr != nil {
+			log.Fatalln(saveErr)
+		}
 		return
 	}
 
-	fmt.Println(new(chuni.Text).Set(plain.String()))
+	result := new(io.Text)
+	result.Set(
+		new(chuni.Text).Set(
+			plain.String(),
+		).String(),
+	)
+	if saveErr := result.Save(resultFileName); saveErr != nil {
+		log.Fatalln(saveErr)
+	}
 }
