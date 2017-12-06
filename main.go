@@ -4,9 +4,20 @@ import (
 	"fmt"
 
 	"github.com/t-9/My-Library-Want-To-Convert/chuni"
+	chuniio "github.com/t-9/My-Library-Want-To-Convert/io"
+)
+
+const (
+	plainTextFileName = "bin/plain.txt"
 )
 
 func main() {
-	plain := "我がライブラが変換せしめん"
-	fmt.Println(new(chuni.Text).Set(plain))
+
+	plain := new(chuniio.Text)
+	if err := plain.Load(plainTextFileName); err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println(new(chuni.Text).Set(plain.String()))
 }
