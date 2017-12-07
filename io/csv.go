@@ -49,7 +49,7 @@ func (c *CSV) Load(name string) (err error) {
 
 // Save take a file name and return a error.
 func (c *CSV) Save(name string) (err error) {
-	return save(name, c.String())
+	return save(c, name)
 }
 
 // Values return values.

@@ -46,7 +46,7 @@ func (t *Text) Load(name string) (err error) {
 
 // Save take a file name and return a error.
 func (t *Text) Save(name string) (err error) {
-	return save(name, t.text)
+	return save(t, name)
 }
 
 // Set take a content.
