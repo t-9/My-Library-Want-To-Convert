@@ -46,36 +46,10 @@ func (t *Text) Load(name string) (err error) {
 
 // Save take a file name and return a error.
 func (t *Text) Save(name string) (err error) {
-	f, err := os.Create(name)
-	if err != nil {
-		return
-	}
-	defer func() {
-		if closeErr := close(f, err); closeErr != nil {
-			err = closeErr
-		}
-	}()
-
-	writer := bufio.NewWriter(f)
-	_, err = writer.WriteString(t.text)
-	if err != nil {
-		return
-	}
-	writer.Flush()
-	return
+	return save(name, t.text)
 }
 
 // Set take a content.
 func (t *Text) Set(content string) {
 	t.text = content
-}
-
-func close(c io.Closer, err error) error {
-	if closeErr := c.Close(); closeErr != nil {
-		if err == nil {
-			return closeErr
-		}
-		return fmt.Errorf("%s\n%s", err.Error(), closeErr.Error())
-	}
-	return nil
 }
