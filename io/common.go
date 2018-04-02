@@ -13,14 +13,11 @@ type textizationFile interface {
 	Save(string) error
 }
 
-func close(c io.Closer, err error) error {
-	if closeErr := c.Close(); closeErr != nil {
-		if err == nil {
-			return closeErr
-		}
-		return fmt.Errorf("%s\n%s", err.Error(), closeErr.Error())
+func close(c io.Closer, err error) (closeErr error) {
+	if closeErr = c.Close(); closeErr != nil && err != nil {
+		closeErr = fmt.Errorf("%s\n%s", err.Error(), closeErr.Error())
 	}
-	return nil
+	return
 }
 
 func save(t textizationFile, name string) (err error) {
@@ -36,9 +33,8 @@ func save(t textizationFile, name string) (err error) {
 
 	writer := bufio.NewWriter(f)
 	_, err = writer.WriteString(t.String())
-	if err != nil {
-		return
+	if err == nil {
+		writer.Flush()
 	}
-	writer.Flush()
 	return
 }

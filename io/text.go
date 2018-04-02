@@ -37,7 +37,8 @@ func (t *Text) Load(name string) (err error) {
 			err = nil
 			t.text = strings.TrimRight(t.text, "\n")
 			return
-		} else if err != nil {
+		}
+		if err != nil {
 			return
 		}
 		t.text = fmt.Sprintf("%s%s\n", t.text, string(rec))

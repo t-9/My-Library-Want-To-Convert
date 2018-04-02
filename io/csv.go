@@ -40,7 +40,8 @@ func (c *CSV) Load(name string) (err error) {
 		if err == io.EOF {
 			err = nil
 			return
-		} else if err != nil {
+		}
+		if err != nil {
 			return
 		}
 		c.values = append(c.values, rec)
